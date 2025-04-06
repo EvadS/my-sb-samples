@@ -1,0 +1,2 @@
+INSERT INTO ITEM (name) VALUES ('item=21');
+INSERT INTO ITEM (name) VALUES ('item=22');
