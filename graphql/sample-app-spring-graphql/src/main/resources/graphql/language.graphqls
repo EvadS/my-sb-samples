@@ -1,0 +1,20 @@
+extend type Query {
+    languages: [LanguageEntity]
+    language(id: ID!): LanguageEntity!
+}
+
+extend type Mutation {
+    newLanguage(languageRequest: LanguageRequest!): LanguageEntity
+    update(id: ID!,languageRequest:LanguageRequest!):LanguageEntity!
+}
+
+type LanguageEntity {
+    id: ID!
+    languageCode: String!
+    languageName: String!
+}
+
+input LanguageRequest {
+    name: String!
+    code: String!
+}
