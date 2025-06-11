@@ -1,0 +1,35 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME:app}
+  jpa:
+    hibernate:
+      ddl-auto: ${DB_DDL_AUTO:update}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: true
+        format_sql: ${DB_FORMAT_SQL:false}
+        globally_quoted_identifiers: true
+        enable_lazy_load_no_trans: true
+    open-in-view: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/quartzDB?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false
+    username: root
+    password: 31323334
+  quartz:
+    job-store-type: ${QUARTZ_JOB_STORE_TYPE:jdbc} # jdbc, memory
+    jdbc:
+      initialize-schema: ${QUARTZ_JDBC_INITIALIZE_SCHEMA:always} # always, never
+    properties:
+      org:
+        quartz:
+          jobStore:
+            class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            isClustered: ${QUARTZ_JOB_STORE_IS_CLUSTERED:true}
+            useProperties: ${QUARTZ_JOB_STORE_USE_PROPERTIES:true}
+            tablePrefix: ${QUARTZ_JOB_STORE_TABLE_PREFIX:QRTZ_}
