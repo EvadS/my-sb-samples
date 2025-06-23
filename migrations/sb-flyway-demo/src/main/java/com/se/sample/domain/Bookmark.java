@@ -36,6 +36,8 @@ public class Bookmark {
     @Column(name = "url", nullable = false, length = 500)
     private String url;
 
+    private String test;
+
     @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at", nullable = false)
@@ -82,5 +84,13 @@ public class Bookmark {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
     }
 }

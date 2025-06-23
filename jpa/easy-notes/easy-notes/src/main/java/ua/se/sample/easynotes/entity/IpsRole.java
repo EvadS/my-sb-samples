@@ -1,10 +1,9 @@
 package ua.lz.ep.models.enums;
 
-import lombok.Getter;
 
 import java.util.stream.Stream;
 
-@Getter
+
 public enum IpsRole {
 
     lawyer(1,"lawyer"),
@@ -25,5 +24,13 @@ public enum IpsRole {
                 .filter(p -> p.getCode() == code)
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getValue() {
+        return value;
     }
 }
