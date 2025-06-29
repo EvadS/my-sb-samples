@@ -17,9 +17,9 @@ spring:
     open-in-view: false
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${POSTGRESQL_HOST:localhost}:${POSTGRESQL_PORT:5432}/${POSTGRESQL_DB:app}
+    url: jdbc:postgresql://${POSTGRESQL_HOST:localhost}:${POSTGRESQL_PORT:5432}/${POSTGRESQL_DB:scheduler_app}
     username: ${POSTGRESQL_USER:postgres}
-    password: ${POSTGRESQL_PASSWORD:secret}
+    password: ${POSTGRESQL_PASSWORD:31323334}
   quartz:
     job-store-type: ${QUARTZ_JOB_STORE_TYPE:jdbc} # jdbc, memory
     jdbc:
