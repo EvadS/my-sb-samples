@@ -25,6 +25,9 @@ public class JobController {
     @Lazy
     JobService jobService;
 
+
+    ///  2025/0710 10:00
+    //  0 0/1 * ? * * *
     @GetMapping("/schedule")
     public ServerResponse schedule(@RequestParam("jobName") String jobName,
                                    //Mon Jun 23 14:10:00 EEST 2025

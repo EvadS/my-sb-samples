@@ -203,10 +203,10 @@ public class JobServiceImpl implements JobService{
 
         try {
             schedulerFactoryBean.getScheduler().pauseJob(jkey);
-            System.out.println("Job with jobKey :"+jobKey+ " paused succesfully.");
+            System.out.println("Job with jobKey :" + jobKey + " paused succesfully.");
             return true;
         } catch (SchedulerException e) {
-            System.out.println("SchedulerException while pausing job with key :"+jobName + " message :"+e.getMessage());
+            System.out.println("SchedulerException while pausing job with key :" + jobName + " message :" + e.getMessage());
             e.printStackTrace();
             return false;
         }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.se.sample.service.JobService;
+import jakarta.annotation.PostConstruct;
 import org.quartz.InterruptableJob;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -21,6 +22,7 @@ public class CronJob extends QuartzJobBean implements InterruptableJob{
 
     @Autowired
     JobService jobService;
+
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
