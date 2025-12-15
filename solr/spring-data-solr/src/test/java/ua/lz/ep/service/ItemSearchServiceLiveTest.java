@@ -65,7 +65,7 @@ public class ItemSearchServiceLiveTest {
         itemSearchService.index("hm0003", "LED TV 32", "Brand1 Home Appliances", 450f);
 
         SolrQuery query = new SolrQuery();
-        query.setQuery("brand1");
+        query.setQuery("Brand1");
         query.setStart(0);
         query.setRows(10);
 
