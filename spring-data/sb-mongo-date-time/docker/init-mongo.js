@@ -1,2 +1,2 @@
-db = db.getSiblingDB('testdb')
+db = db.getSiblingDB('my-collection')
 db.createCollection('testdata')
