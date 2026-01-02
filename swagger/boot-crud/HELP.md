@@ -36,3 +36,6 @@ https://www.javainuse.com/boot3/sec/5
 
 user: javainuse
 password: javainuse
+
+
+insert into user (username,password) values ("javainuse"," $2a$10$Blo1zhOd20Mdy/7JNy6OnetuUcf1J82RRk1gUdIYSA2DgKojXATQ");
