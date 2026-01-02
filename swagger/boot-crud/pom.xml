@@ -10,9 +10,10 @@
     </parent>
     <groupId>com.se.sample</groupId>
     <artifactId>boot-crud</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>boot-crud</name>
-    <description>boot-crud</description>
+    <description>Spring Boot 3 + Basic Authentication Security + Swagger Example</description>
+
     <url/>
 
     <properties>
