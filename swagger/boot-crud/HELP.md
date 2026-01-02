@@ -51,3 +51,11 @@ he swagger ui.
 ```
     http://localhost:18000/javainuse-openapi
 ```
+
+step 5
+Spring Boot 3 + Basic Authentication Security + Swagger Example
+https://www.javainuse.com/boot3/sec/9
+
+```
+    http://localhost:18000/swagger-ui/index.html
+```
