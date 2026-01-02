@@ -28,5 +28,11 @@ parent.
 To prevent this, the project POM contains empty overrides for these elements.
 If you manually switch to a different parent and actually want the inheritance, you need to remove those overrides.
 
-step 1. crud app
+step1. crud app
 https://www.javainuse.com/boot3/db/1
+
+step2. Spring Boot 3 + MySQL + Security Basic Authentication HelloWorld Example
+https://www.javainuse.com/boot3/sec/5
+
+user: javainuse
+password: javainuse
