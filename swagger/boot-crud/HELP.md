@@ -39,3 +39,15 @@ password: javainuse
 
 
 insert into user (username,password) values ("javainuse"," $2a$10$Blo1zhOd20Mdy/7JNy6OnetuUcf1J82RRk1gUdIYSA2DgKojXATQ");
+
+step3 removed auth
+
+step4 swagger
+he swagger ui.
+```
+    http://localhost:18000/swagger-ui/index.html
+```
+
+```
+    http://localhost:18000/javainuse-openapi
+```
