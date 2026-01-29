@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import com.example.controller.BookController;
 import com.example.model.Book;
 import com.example.service.BookService;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(BookController.class)
 /** Spring Boot: Testing Controllers with MockMVC */
-public class BookControllerTest {
+public class BookControllerWebMvcTest {
 
     @Autowired
     MockMvc mvc;

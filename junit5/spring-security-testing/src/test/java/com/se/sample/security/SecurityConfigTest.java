@@ -10,7 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
-
+/*обычный модульный тест для конечной точки контроллера
+подымается весь контеткст
+* */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class SecurityConfigTest {
 
@@ -49,6 +51,7 @@ class SecurityConfigTest {
         final var url = String.format("http://localhost:%s/api/hello-world/greetings?name=%s", this.port, name);
         return testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, GreetingDto.class);
     }
+
 
     @Test
     void whenApiIsRequested_andUserHeaderIsNotSet_thenReturnForbidden() {
@@ -95,4 +98,8 @@ class SecurityConfigTest {
         Assertions.assertEquals(HttpStatus.FORBIDDEN, greetingDtoResponseEntity.getStatusCode());
         Assertions.assertNull(greetingDtoResponseEntity.getBody());
     }
+
+
+    String aa =" private ResponseEntity<GreetingDto> invokeGreetingsApi(final String name, final HttpEntity<Object> httpEntity) {\n final var url = String.format(\"http://localhost:%s/api/hello-world/greetings?name=%s\", this.port, name);\n return testRestTemplate.exchange(url, HttpMethod.GET, httpEntity, GreetingDto.class);\n}"
+               ;
 }

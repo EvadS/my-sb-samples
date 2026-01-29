@@ -1,5 +1,7 @@
-package com.example;
+package com.example.controller;
 
+import com.example.model.Book;
+import com.example.service.BookService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
