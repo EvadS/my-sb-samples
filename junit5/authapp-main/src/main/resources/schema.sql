@@ -17,3 +17,6 @@ create TABLE user_role (
                            user INTEGER,
                            role INTEGER
 );
+
+insert into  role (name) values ( 'Admin');
+insert into  role (name) values ( 'User')
