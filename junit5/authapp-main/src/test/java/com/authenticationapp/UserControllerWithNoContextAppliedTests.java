@@ -26,21 +26,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles("test")
 public class UserControllerWithNoContextAppliedTests {
+
     @Autowired
     private WebApplicationContext applicationContext;
+
     private MockMvc mockMvc;
+
     @Autowired
     private UserRepository userRepository;
 
     @BeforeAll
-    public void init(){
+    public void init() {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(applicationContext)
                 .build();
         setupUser();
     }
 
-    private void setupUser(){
+    private void setupUser() {
         User user = new User();
         user.setEnabled(true);
         user.setPassword("1234567");
