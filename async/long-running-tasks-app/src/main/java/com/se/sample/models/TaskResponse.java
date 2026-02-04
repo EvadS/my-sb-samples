@@ -6,4 +6,6 @@ import lombok.Data;
 public class TaskResponse {
     private String id;
     private String name;
+
+    private String state;
 }

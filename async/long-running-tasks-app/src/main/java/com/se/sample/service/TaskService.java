@@ -4,8 +4,10 @@ package com.se.sample.service;
 import com.se.sample.models.Task;
 import com.se.sample.models.TaskRequest;
 import com.se.sample.models.TaskResponse;
+import com.se.sample.models.enums.TaskState;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,6 +29,22 @@ public class TaskService {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setId(id.toString());
         taskResponse.setName(taskRequest.getTaskName());
+        return taskResponse;
+    }
+
+    public List<String> getAll() {
+        return tasksMap.values().stream().map(task -> task.getId() + ", " + task.getName() + ", " + task.getProgress()).toList();
+    }
+
+    public TaskResponse getById(String id) {
+        Task task = tasksMap.get(id);
+
+        TaskResponse taskResponse = new TaskResponse();
+
+        taskResponse.setId(task.getId().toString());
+        taskResponse.setName(task.getName());
+        TaskState state = task.getState();
+        taskResponse.setState(state.name());
         return taskResponse;
     }
 }

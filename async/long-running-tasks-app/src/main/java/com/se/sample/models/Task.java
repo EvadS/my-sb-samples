@@ -1,5 +1,6 @@
 package com.se.sample.models;
 
+import com.se.sample.models.enums.TaskState;
 import lombok.Data;
 
 import java.util.UUID;
@@ -12,10 +13,5 @@ public class Task {
     private TaskState state = TaskState.CREATED;
     private String name;
 
-    enum TaskState {
-        CREATED,
-        RUNNING,
-        COMPLETED,
-        CANCELED
-    }
+
 }
