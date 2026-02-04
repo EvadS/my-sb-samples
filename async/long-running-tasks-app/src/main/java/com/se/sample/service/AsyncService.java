@@ -1,4 +1,4 @@
-package com.se.sample;
+package com.se.sample.service;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
