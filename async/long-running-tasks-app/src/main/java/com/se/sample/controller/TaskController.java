@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -18,27 +19,14 @@ public class TaskController {
 
     @Autowired private TaskServiceImpl taskService;
 
-    @PostMapping("/create")
-    TaskResponse createTask(@RequestBody TaskRequest task) {
-        TaskResponse taskResponse =  taskService.createTask(task);
-        return taskResponse;
-    }
-
     @GetMapping("/list")
     List<String> getAllTasks() {
         return taskService.getAll();
     }
 
+
     @GetMapping("/{id}")
-    TaskResponse getById(  @PathVariable(name = "id")String id) {
+    TaskResponse get(@PathVariable String id ){
         return taskService.getById(id);
-    }
-
-
-
-    @GetMapping("/run")
-    public String runBackgroundTask() {
-        asyncService.executeAsyncTask();
-        return "Background task is running...";
     }
 }

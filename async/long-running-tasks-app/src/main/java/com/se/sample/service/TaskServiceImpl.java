@@ -19,38 +19,26 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TaskServiceImpl implements TaskService {
 
     private Map<UUID, Task> tasksMap = new ConcurrentHashMap<>();
-    private ApplicationEventPublisher publisher;
+       private final ApplicationEventPublisher publisher;
 
-
-    public TaskResponse createTask(TaskRequest taskRequest) {
-        UUID id = UUID.randomUUID();
-
-        Task task = new Task();
-        task.setId(id);
-        task.setName(taskRequest.getTaskName());
-        tasksMap.put(id, task);
-
-        TaskResponse taskResponse = new TaskResponse();
-        taskResponse.setId(id.toString());
-        taskResponse.setName(taskRequest.getTaskName());
-        return taskResponse;
+    public TaskServiceImpl(ApplicationEventPublisher eventPublisher) {
+        this.publisher = eventPublisher;
     }
 
+
     public List<String> getAll() {
-        return tasksMap.values().stream().map(task -> task.getId() + ", " + task.getName() + ", " + task.getProgress()).toList();
+        return tasksMap.values().stream().map(Task::toString).toList();
     }
 
 
     @Override
     public TaskResponse getById(String id) {
 
-UUID uuid = UUID.fromString(id);
+        UUID uuid = UUID.fromString(id);
         Task task = tasksMap.get(uuid);
-
         TaskResponse taskResponse = new TaskResponse();
 
         taskResponse.setId(task.getId().toString());
-        taskResponse.setName(task.getName());
         TaskState state = task.getState();
         taskResponse.setState(state.name());
         return taskResponse;
@@ -58,46 +46,37 @@ UUID uuid = UUID.fromString(id);
 
     @Override
     public void submit(Operation op) {
-
+        tasksMap.computeIfAbsent(op.getTask().getId(), k -> new Task());
+        publisher.publishEvent(op);
     }
 
     @Override
     public void start(UUID id) {
-
+        tasksMap.computeIfPresent(id, (k,v) -> v.copy(TaskState.RUNNING));
     }
 
     @Override
     public void progress(UUID id, Integer progress) {
-
+        tasksMap.computeIfPresent(id, (k,v) -> v.copy(progress));
     }
 
     @Override
     public void cancel(UUID id) {
-
+        tasksMap.computeIfPresent(id, (k,v) -> v.copy(TaskState.CANCELED));
     }
 
     @Override
     public Boolean active(UUID id) {
-        return null;
+        if(tasksMap.get(id) !=   null ){
+            return  tasksMap.get(id).getState() == TaskState.RUNNING;
+        }
+
+        throw new IllegalArgumentException("Task $id not found");
     }
 
     @Override
     public void complete(UUID id) {
-
+        tasksMap.computeIfPresent(id, (k,v) -> v.copy(TaskState.COMPLETED));
     }
-
-//
-//    void submit(Operation op) {
-//        tasksMap.computeIfAbsent(op.getTask().getId(), p -> op.getTask());
-//        publisher.publishEvent(op);
-//    }
-
-    // submit
-    // start
-    // progress
-
-    // cancel
-    // active
-    // complete
 
 }
