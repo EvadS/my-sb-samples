@@ -1,11 +1,9 @@
 package com.se.sample.service;
 
 
-import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import com.se.sample.models.Operation;
 import com.se.sample.models.Task;
-import com.se.sample.models.TaskRequest;
-import com.se.sample.models.TaskResponse;
+import com.se.sample.models.response.TaskResponse;
 import com.se.sample.models.enums.TaskState;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

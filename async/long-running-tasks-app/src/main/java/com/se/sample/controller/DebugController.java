@@ -1,9 +1,6 @@
 package com.se.sample.controller;
 
 import com.se.sample.config.ControllersApiPaths;
-import com.se.sample.models.GenerationRequest;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.extern.log4j.Log4j2;
 
 import org.springframework.web.bind.annotation.*;

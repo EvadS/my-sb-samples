@@ -1,7 +1,7 @@
 package com.se.sample.service;
 
 import com.se.sample.models.Operation;
-import com.se.sample.models.TaskResponse;
+import com.se.sample.models.response.TaskResponse;
 
 import java.util.UUID;
 

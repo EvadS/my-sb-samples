@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 @Service
 public class MarketingService {
 
-private final TaskService taskService;
+    private final TaskService taskService;
 
 
     public MarketingService(TaskService taskService) {
@@ -29,6 +29,7 @@ private final TaskService taskService;
         IntStream stream = IntStream.range(1, 10);
         stream.forEach(actual -> {
             if(taskService.active(op.getTask().getId())){
+
 
                 try {
                     Thread.sleep(10_000);

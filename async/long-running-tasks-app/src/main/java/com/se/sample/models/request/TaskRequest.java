@@ -1,4 +1,4 @@
-package com.se.sample.models;
+package com.se.sample.models.request;
 
 import lombok.Data;
 

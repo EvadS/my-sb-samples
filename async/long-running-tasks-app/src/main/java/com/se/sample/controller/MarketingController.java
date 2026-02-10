@@ -19,6 +19,8 @@ public class MarketingController {
     @PostMapping("/broadcast/start")
     public ResponseEntity<Void> broadcast(){
         Broadcast op = new Broadcast();
+
+
         taskService.submit(op);
 
         String str = String.format("/tasks/%s",op.getTask().getId());

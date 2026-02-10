@@ -16,6 +16,8 @@ public class Task {
     private Integer progress = 0;
     private TaskState state = TaskState.CREATED;
 
+
+
     public Task copy(Integer progress) {
         Task task = new Task();
         task.setId(this.id);
