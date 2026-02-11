@@ -25,7 +25,10 @@ public class SolrIntegrationTest {
     @Container
     public static SolrContainer solrContainer = new SolrContainer(
             DockerImageName.parse("solr:8.11.1")
-    );
+
+    ).withCollection("my-collection")
+
+            ;
 
     @BeforeAll
     static void setUp() {
@@ -47,7 +50,7 @@ public class SolrIntegrationTest {
 
         SolrPing ping = new SolrPing();
         ping.getParams().add("distrib", "true"); //To make it a distributed request against a collection
-        SolrPingResponse rsp = ping.process(solrClient, "dummy");
+        SolrPingResponse rsp = ping.process(solrClient, "my-collection");
         int status = rsp.getStatus();
         
         Assertions.assertNotNull(status);
