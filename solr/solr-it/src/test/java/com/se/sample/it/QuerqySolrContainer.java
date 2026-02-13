@@ -100,8 +100,13 @@ public class QuerqySolrContainer extends SolrContainer {
     protected void containerIsStarted(InspectContainerResponse containerInfo) {
 
         try {
+//            // 8.1
+//            ExecResult result = execInContainer("solr", "zk", "upconfig", "-z", "localhost:9983", "-n",
+//                    QUERQY_IT_CONFIGSET, "-d",
+//                    String.format("/opt/solr/server/solr/configsets/%s", QUERQY_IT_CONFIGSET));
+
             // upload configset that we linked into the container
-            ExecResult result = execInContainer("solr", "zk", "upconfig", "-z", "localhost:9983", "-n",
+            ExecResult result = execInContainer("solr", "zk", "-upconfig", "-z", "localhost:9983", "-n",
                     QUERQY_IT_CONFIGSET, "-d",
                     String.format("/opt/solr/server/solr/configsets/%s", QUERQY_IT_CONFIGSET));
             if (result.getExitCode() != 0) {

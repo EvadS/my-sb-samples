@@ -71,9 +71,11 @@ public class QuerqySolrClientUtils extends SolrClientUtils {
        String chorusDataSet = FileUtils.readFileToString(solr.getTestDataPath().toFile(), "UTF-8");
 
         // compose create collection url
-        HttpPost importData = new HttpPost(String.format(
+        String format = String.format(
                 "%s/%s/update?commit=true",
-                solr.getSolrUrl(), collectionName));
+                solr.getSolrUrl(), collectionName);
+
+        HttpPost importData = new HttpPost(format);
         importData.setEntity(new StringEntity(chorusDataSet, ContentType.APPLICATION_JSON));
 
         // execute request
