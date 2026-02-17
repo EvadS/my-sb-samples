@@ -1,4 +1,4 @@
-package com.se.sample.it;
+package com.se.sample;
 
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -14,8 +14,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 //import org.testcontainers.solr.SolrContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @Testcontainers
 public class SolrIntegrationTest {
 
@@ -27,7 +25,6 @@ public class SolrIntegrationTest {
             DockerImageName.parse("solr:8.11.1")
 
     ).withCollection("my-collection")
-
             ;
 
     @BeforeAll
@@ -50,7 +47,7 @@ public class SolrIntegrationTest {
 
         SolrPing ping = new SolrPing();
         ping.getParams().add("distrib", "true"); //To make it a distributed request against a collection
-        SolrPingResponse rsp = ping.process(solrClient, "my-collection");
+        SolrPingResponse rsp = ping.process(solrClient, "dummy");
         int status = rsp.getStatus();
         
         Assertions.assertNotNull(status);
