@@ -47,10 +47,6 @@ spring:
     mapper:
       # For enums, consider case insensitive when parsing to json object
       accept-case-insensitive-enums: true
-
-  resources:
-    add-mappings: false
-
   # Datasource Configurations
   h2:
     console:
@@ -63,7 +59,8 @@ spring:
     driverClassName: org.h2.Driver
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
 
 # Custom Configurations
 file:
-  upload-location: E:\Projects\2much2learn\2much2learn_examples\catalogue-crud
+  upload-location: E:\Projects\catalogue-crud
