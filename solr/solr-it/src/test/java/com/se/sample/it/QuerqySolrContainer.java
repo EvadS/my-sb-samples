@@ -52,6 +52,9 @@ public class QuerqySolrContainer extends SolrContainer {
 
         checkMavenFailsafeSetup();
 
+        String property = System.getProperty(PROP_PROJECT_BUILD_DIRECTORY);
+        String propFileName = System.getProperty(PROP_PROJECT_BUILD_FINALNAME);
+
 //todo:
         String querqyBinaryPath = String.format("%s/%s-jar-with-dependencies.jar",
                 System.getProperty(PROP_PROJECT_BUILD_DIRECTORY), System.getProperty(PROP_PROJECT_BUILD_FINALNAME));
