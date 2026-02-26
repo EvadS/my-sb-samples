@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Sql("/db/jpa/history/schema.sql")
 @Testcontainers
 public class BookRepositoryServiceConnectionTest {
 
@@ -29,6 +31,7 @@ public class BookRepositoryServiceConnectionTest {
     private static final DockerImageName MYSQL_IMAGE = DockerImageName.parse(MYSQL_IMAGE_TAG)
             .asCompatibleSubstituteFor("mysql");
 
+
     @Container
     @ServiceConnection
     static final MySQLContainer<?> mySQLContainer = new MySQLContainer<>(MYSQL_IMAGE);
@@ -38,5 +41,16 @@ public class BookRepositoryServiceConnectionTest {
 
         List<Book> result = bookRepository.findAll();
         assertEquals(0, result.size());
+    }
+
+    @Test
+    public void testCreateBook() {
+
+        Book book = new  Book(1L, "String name", "String isbn");
+
+        Book save = bookRepository.save(book);
+
+        List<Book> all = bookRepository.findAll();
+        assertEquals(1, all.size());
     }
 }

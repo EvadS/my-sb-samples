@@ -1,6 +1,7 @@
 package com.se.sample.repository;
 
 import com.se.sample.model.Book;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -20,12 +21,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @ContextConfiguration and ApplicationContextInitializer
+ *
+ * worked1 1
  */
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+
 //@Sql("/db/jpa/history/schema.sql")
+
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED)
 @Testcontainers
+
+@Slf4j
 public class BookRepositoryDynamicPropertyTest {
 
     @Autowired
@@ -40,10 +49,18 @@ public class BookRepositoryDynamicPropertyTest {
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
+
         registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
         registry.add("spring.datasource.username", mySQLContainer::getUsername);
         registry.add("spring.datasource.password", mySQLContainer::getPassword);
-        registry.add("spring.jpa.hibernate.ddl-auto", () -> "update");
+        registry.add("spring.jpa.hibernate.ddl-auto",() -> "create");
+
+        log.info("""
+        Spring data source is set as follows for the test:
+        spring.datasource.url = {}
+        spring.datasource.username = {}
+        spring.datasource.password = {}
+        """,mySQLContainer.getJdbcUrl(), mySQLContainer.getUsername(), mySQLContainer.getPassword());
     }
 
     @Test
