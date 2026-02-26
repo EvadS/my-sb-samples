@@ -19,6 +19,12 @@ public class Book {
     public Book() {
     }
 
+
+    public Book( String name, String isbn) {
+        this.name = name;
+        this.isbn = isbn;
+    }
+
     public Book(Long id, String name, String isbn) {
         this.id = id;
         this.name = name;

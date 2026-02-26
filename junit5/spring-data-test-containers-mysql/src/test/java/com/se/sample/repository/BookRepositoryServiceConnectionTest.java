@@ -18,7 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NON_TEST)
 @Sql("/db/jpa/history/schema.sql")
 @Testcontainers
 public class BookRepositoryServiceConnectionTest {
@@ -46,7 +46,7 @@ public class BookRepositoryServiceConnectionTest {
     @Test
     public void testCreateBook() {
 
-        Book book = new  Book(1L, "String name", "String isbn");
+        Book book = new  Book( "String name", "String isbn");
 
         Book save = bookRepository.save(book);
 
