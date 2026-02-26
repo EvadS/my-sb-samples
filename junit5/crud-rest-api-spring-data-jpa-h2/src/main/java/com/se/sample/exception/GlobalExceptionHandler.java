@@ -45,7 +45,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(error);
     }
 
-//    @ExceptionHandler(NoHandlerFoundException.class)
+    //    @ExceptionHandler(NoHandlerFoundException.class)
 //    @ResponseStatus(value = HttpStatus.NOT_FOUND)
 //    @ResponseBody
 //    public ErrorResponse onNoHandlerFound(NoHandlerFoundException exception, WebRequest request) {
@@ -182,19 +182,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+    // ...
+    @ExceptionHandler(DataAccessException.class)
+    public ResponseEntity<String> handleDataAccessException(DataAccessException ex) {
         // ...
-        @ExceptionHandler(DataAccessException.class)
-        public ResponseEntity<String> handleDataAccessException(DataAccessException ex) {
-            // ...
-            return new ResponseEntity<>("A data access error occurred.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>("A data access error occurred.", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @ExceptionHandler(value = {CannotCreateTransactionException.class})
     public ResponseEntity<?> cannotCreateTransactionException(CannotCreateTransactionException exception, WebRequest request) {
         if (exception.contains(ConnectException.class)) {
             log.error("DB ConnectException :  {}", exception.getMessage());
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
-        }else {
+        } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
