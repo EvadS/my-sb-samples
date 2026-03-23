@@ -1,0 +1,32 @@
+ @Test
+    @DisplayName("update prompt from file. 415. incorrect request method ")
+    public  void uploadFile_with_incorrect_api_should_work_correct() throws Exception {
+
+        // 1. Create a MockMultipartFile
+        MockMultipartFile mockMultipartFile = new MockMultipartFile(
+                "file", // Name of the request part (matches controller's @RequestPart or @RequestParam name)
+                "filename.txt", // Original filename
+                "text/plain", // Content type
+                "test data".getBytes() // Content
+        );
+
+        // 2. Create a RequestPostProcessor to change the HTTP method to PUT
+        RequestPostProcessor putMethodProcessor = request -> {
+            request.setMethod("PUT");
+            return request;
+        };
+
+        String url = ControllersApiPaths.BASE_PATH + ControllersApiPaths.PROMPT_API +"/upload-file2";
+
+        // 3. Perform the request using MockMvcRequestBuilders.multipart() and apply the processor
+        mockMvc.perform(MockMvcRequestBuilders.multipart(url, 1)
+                        .file(mockMultipartFile)
+                        //.param("role", "accountant")
+                        .with(putMethodProcessor)) // Apply the post-processor
+                .andExpect(status().isOk());
+
+        MvcResult mvcResult = mockMvc.perform(multipart(url).file(mockMultipartFile)
+                        .param("role", "accountant"))
+                .andReturn();
+        int a =0;
+    }

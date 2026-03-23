@@ -1,0 +1,16 @@
+
+
+one - to - one with composite foreign key
+
+    @ElementCollection
+    @CollectionTable(
+            name = "document_ids",
+            // The join column for the owning entity's ID
+            joinColumns = @JoinColumn(name = "document_ids"),
+            // Defining the composite unique constraint
+            uniqueConstraints = @UniqueConstraint(columnNames = {"creationDate", "role"})
+    )
+//    @AttributeOverrides({
+//            @AttributeOverride(name = "email", column = @Column(name = "email_address"))
+//    })
+    private Set<String> emails;
