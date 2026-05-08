@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" name="MyApp">
     <Properties>
-        <Property name="basePath">/var/logs/demo-logs</Property>
+        <Property name="basePath">/var/logs/demo-logs-prod</Property>
         <Property name="app-name">demo_logs_app</Property>
         <Property name="LOG_LEVEL_PATTERN">%5p</Property>
         <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
@@ -34,11 +34,6 @@
     </Appenders>
 
     <Loggers>
-        <!-- Custom Logger for a specific package -->
-        <Logger name="com.se.sample.controller" level="debug" additivity="false">
-            <AppenderRef ref="Console"/>
-        </Logger>
-
         <Root level="info">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="rollingFile"/>

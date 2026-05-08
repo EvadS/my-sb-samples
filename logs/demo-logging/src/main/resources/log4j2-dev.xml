@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" name="MyApp">
     <Properties>
-        <Property name="basePath">/var/logs/demo-logs</Property>
+        <Property name="basePath">/var/logs/demo-logs-dev</Property>
         <Property name="app-name">demo_logs_app</Property>
         <Property name="LOG_LEVEL_PATTERN">%5p</Property>
         <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
@@ -39,7 +39,7 @@
             <AppenderRef ref="Console"/>
         </Logger>
 
-        <Root level="info">
+        <Root level="debug">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="rollingFile"/>
         </Root>

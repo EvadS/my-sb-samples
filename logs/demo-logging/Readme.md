@@ -9,3 +9,9 @@
 | WARN  | The service is an an unusual state that may require attention if it continues. |
 | ERROR | An operation failed and functionality was impacted.                            |
 | FATAL | An unrecoverable condition that forces the application to shut down.           |
+
+
+## Полезная нагрузка
+
+1. Базовый уровень логирования и отдельный уровень для котроллеров 
+2. Расположение файла логов 
