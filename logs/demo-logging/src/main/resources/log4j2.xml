@@ -5,9 +5,15 @@
         <Property name="app-name">demo_logs_app</Property>
         <Property name="LOG_LEVEL_PATTERN">%5p</Property>
         <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
-        <Property name="pattern-debug">%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint} %clr{${LOG_LEVEL_PATTERN}} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{7}}{cyan} %clr{:}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
+        <Property name="pattern-debug">%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint} %clr{${LOG_LEVEL_PATTERN}} %clr{${sys:PID}}{magenta}
+            |%clr{---}{faint}
+            %clr{[%15.15t]}{faint}
+            %clr{%-40.40c{7}}{cyan}
+            %clr{:}{faint}
+            %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
 
-        <Property name="pattern">%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Property>
+        <Property name="pattern">%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %msg%n</Property>
+
     </Properties>
 
     <Appenders>
