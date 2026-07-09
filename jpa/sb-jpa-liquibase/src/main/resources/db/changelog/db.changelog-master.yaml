@@ -3,5 +3,3 @@ databaseChangeLog:
       file: db/changelog/001-create-tables.yaml
   - include:
       file: db/changelog/002-insert-sample-data.yaml
-  - include:
-      file: /src/main/resources/db/changelog/003-add-manufacturer.yaml

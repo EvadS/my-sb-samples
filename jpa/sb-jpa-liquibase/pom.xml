@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.se.sample</groupId>
-    <artifactId>sb-jpa-liquibase</artifactId>
+    <artifactId>sb-jpa-liquibase-postgres</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>sb-jpa-liquibase</name>
-    <description>sb-jpa-liquibase</description>
+    <description>sb-jpa-liquibase-postgress</description>
     <url/>
     <licenses>
         <license/>
@@ -20,12 +20,6 @@
     <developers>
         <developer/>
     </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -67,6 +61,32 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.27.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>42.6.0</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <changeLogFile>src/main/resources/db/changelog/db.changelog-master.yaml</changeLogFile>
+                    <driver>org.postgresql.Driver</driver>
+                    <url>jdbc:postgresql://localhost:5432/neurowatch?options=-c%20TimeZone=UTC</url>
+                    <defaultSchemaName />
+                    <username>neurowatch_user</username>
+                    <password>mypassword</password>
+                    <referenceUrl>hibernate:spring:com.se.sample?dialect=org.hibernate.dialect.PostgreSQLDialect
+                        &amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+                        &amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+                    </referenceUrl>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
