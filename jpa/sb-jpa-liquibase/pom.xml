@@ -12,7 +12,7 @@
     <artifactId>sb-jpa-liquibase-postgres</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>sb-jpa-liquibase</name>
-    <description>sb-jpa-liquibase-postgress</description>
+    <description>sb-jpa-liquibase-postgres</description>
     <url/>
     <licenses>
         <license/>
