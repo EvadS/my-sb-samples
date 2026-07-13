@@ -20,6 +20,20 @@ public class SbJpaLiquibaseApplication implements CommandLineRunner {
 
 
     public static void main(String[] args) {
+        // Ensure Liquibase has a JDBC driver when running outside of the full
+        // Spring Boot environment (for example during some maven/liquibase runs)
+        // If the driver is already provided via properties, don't overwrite it.
+        if (System.getProperty("liquibase.driver") == null) {
+            // Default to PostgreSQL driver because this project targets Postgres.
+            System.setProperty("liquibase.driver", "org.postgresql.Driver");
+        }
+        // If a JDBC URL isn't supplied to Liquibase, some plugin executions may
+        // attempt to use the hibernate URL which Liquibase can't parse. Avoid
+        // that by not setting a URL here; prefer configuration in
+        // application.properties or liquibase.properties. The driver above
+        // is usually sufficient to let Liquibase determine connectivity when
+        // running inside Spring Boot with a DataSource.
+
         SpringApplication.run(SbJpaLiquibaseApplication.class, args);
     }
 
