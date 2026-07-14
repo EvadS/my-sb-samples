@@ -25,14 +25,19 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
 public class ComparisonService {
 
-    private final SolrClient upsuSolrClient;
-
     private static final Logger logger = LoggerFactory.getLogger(ComparisonService.class);
+    private final SolrClient upsuSolrClient;
     private final String collectionName;
     private final String editionName;
 
@@ -61,51 +66,9 @@ public class ComparisonService {
     }
 
     @PostConstruct
-    private void init(){
-
-        try {
-            List<String> iterate = iterateSolrDocuments("");
-            int a =0;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    public  List<String> iterate() throws SolrServerException, IOException {
-        List<String> notExistedEdition = new ArrayList<>();
-        SolrQuery query = new SolrQuery("*:*");
-        query.setRows(1000); // Размер пакета (batch size)
-
-        query.addField(FieldMapping.id);
-        query.addField(FieldMapping.f_current_edition);
-        query.addField(FieldMapping.f_edition_list_ids);
-
-
-        upsuSolrClient.queryAndStreamResponse(collectionName, query, new StreamingResponseCallback() {
-            @Override
-            public void streamSolrDocument(SolrDocument doc) {
-                String id = doc.getFieldValue(FieldMapping.id).toString();
-                Object editionListObj = doc.getFieldValue(FieldMapping.f_edition_list_ids);
-                // Конвертация значения поля в List<String>
-                List<String> editionList = objectToStringList(editionListObj);
-                // Обработка каждого документа по мере поступления
-                logger.info("id:{} , editions: {}", id, editionList);
-
-                List<String> editionIds = buildEditionIds(id,  editionList);
-
-                notExistedEdition.addAll(getNotExistedEdition(editionIds));
-
-            }
-
-            @Override
-            public void streamDocListInfo(long numFound, long start, Float maxScore) {
-                // Вызывается один раз перед началом потока с метаданными
-                System.out.println("Всего найдено: " + numFound);
-            }
-        });
-
-        return notExistedEdition;
+    private void init() {
+        List<String> lostEditionsList = getLostEditionsList("");
+        int aaa = 0;
     }
 
     private List<String> getNotExistedEdition(List<String> editionIds) {
@@ -132,12 +95,11 @@ public class ComparisonService {
     private List<String> buildEditionIds(String id, List<String> editionList) {
         List<String> editionIds = new ArrayList<>();
         for (String edition : editionList) {
-            if(StringUtils.isEmpty(edition)){
+            if (StringUtils.isEmpty(edition)) {
                 editionIds.add(id);
+            } else {
+                editionIds.add(String.format("%s_%s", id, edition)); // В данном случае просто добавляем строку как есть
             }
-            else{
-            editionIds.add(String.format("%s_%s", id, edition)); // В данном случае просто добавляем строку как есть
-        }
         }
         return editionIds;
     }
@@ -154,59 +116,76 @@ public class ComparisonService {
         }
     }
 
-    public List<String> iterateSolrDocuments(String query) throws Exception {
+    // Extracted helper to process a single SolrDocument: build edition ids and check for missing editions
+    private List<String> processDocument(SolrDocument doc) {
+        try {
+            String id = doc.getFieldValue(FieldMapping.id).toString();
+            logger.info("Processing doc (thread: {}), id: {}", Thread.currentThread().getName(), id);
+            Object editionListObj = doc.getFieldValue(FieldMapping.f_edition_list_ids);
+            List<String> editionList = objectToStringList(editionListObj);
+            logger.info("id:{} , editions: {}", id, editionList);
+            List<String> editionIds = buildEditionIds(id, editionList);
+            return getNotExistedEdition(editionIds);
+        } catch (Exception e) {
+            logger.error("Error processing document: {}", e.getMessage(), e);
+            return Collections.emptyList();
+        }
+    }
+
+    public List<String> getLostEditionsList(String query) {
         List<String> notExistedEdition = new ArrayList<>();
         // Build the query targeting all documents
         SolrQuery solrQuery = new SolrQuery();
-        solrQuery.setQuery("*:*"); // Match all documents
-        solrQuery.setRows(500);    // Fetch data in chunks of 500
+        solrQuery.setQuery("*:*");
+        solrQuery.setRows(500);
+        if (!StringUtils.isEmpty(query)) {
+            logger.info("Using); custom query: {}", query);
+            solrQuery.setQuery(query);
+        }
 
-        // Cursors REQUIRE a tie-breaking sort field (like 'id' or your unique key)
         solrQuery.setSort("id", SolrQuery.ORDER.asc);
-
+        solrQuery.addField(FieldMapping.id);
+        solrQuery.addField(FieldMapping.f_current_edition);
+        solrQuery.addField(FieldMapping.f_edition_list_ids);
         // Start from the beginning
         String cursorMark = CursorMarkParams.CURSOR_MARK_START;
         boolean done = false;
 
-        while (!done) {
-            solrQuery.set(CursorMarkParams.CURSOR_MARK_PARAM, cursorMark);
-            solrQuery.addField(FieldMapping.id);
-            solrQuery.addField(FieldMapping.f_current_edition);
-            solrQuery.addField(FieldMapping.f_edition_list_ids);
+        try {
+            while (!done) {
+                solrQuery.set(CursorMarkParams.CURSOR_MARK_PARAM, cursorMark);
+                try {
+                    QueryResponse response = upsuSolrClient.query(collectionName, solrQuery);
+                    SolrDocumentList documents = response.getResults();
 
-            QueryResponse response = upsuSolrClient.query(collectionName, solrQuery);
-            SolrDocumentList documents = response.getResults();
+                    // For each document build edition ids and check existence
+                    for (SolrDocument doc : documents) {
+                        notExistedEdition.addAll(processDocument(doc));
+                    }
 
-            // Iterate over the documents in the current batch
-            for (SolrDocument doc : documents) {
-                String id = doc.getFieldValue(FieldMapping.id).toString();
-                logger.info("Processing doc, id: {}", id);
-                Object editionListObj = doc.getFieldValue(FieldMapping.f_edition_list_ids);
-                // Конвертация значения поля в List<String>
-                List<String> editionList = objectToStringList(editionListObj);
-                // Обработка каждого документа по мере поступления
-                logger.info("id:{} , editions: {}", id, editionList);
+                    // Get the cursor mark for the next page
+                    String nextCursorMark = response.getNextCursorMark();
 
-                List<String> editionIds = buildEditionIds(id,  editionList);
+                    // If the cursor mark doesn't change, we have reached the end
+                    if (cursorMark.equals(nextCursorMark)) {
+                        done = true;
+                    }
 
-                notExistedEdition.addAll(getNotExistedEdition(editionIds));
-
+                    cursorMark = nextCursorMark;
+                } catch (SolrServerException | IOException e) {
+                    logger.error("Error processing document in parallel: {}", e.getMessage(), e);
+                }
             }
 
-            // Get the cursor mark for the next page
-            String nextCursorMark = response.getNextCursorMark();
+            logger.info("Finished iterating all documents (multithreaded). Collected {} missing editions.", notExistedEdition.size());
 
-            // If the cursor mark doesn't change, we have reached the end
-            if (cursorMark.equals(nextCursorMark)) {
-                done = true;
+            return notExistedEdition;
+        } finally {
+            try {
+                upsuSolrClient.close();
+            } catch (IOException e) {
+                logger.warn("Error closing Solr client: {}", e.getMessage(), e);
             }
-
-            cursorMark = nextCursorMark;
         }
-
-        upsuSolrClient.close();
-        logger.info("Finished iterating all documents.");
-
-        return  notExistedEdition;
     }
 }
