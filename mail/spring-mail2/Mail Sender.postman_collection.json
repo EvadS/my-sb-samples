@@ -1,0 +1,91 @@
+{
+  "info": {
+    "_postman_id": "c2d5cee8-a50f-4115-aad0-eeb3c7523555",
+    "name": "Mail Sender",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "19433818"
+  },
+  "item": [
+    {
+      "name": "Text Mail",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"to\": \"testEmail@gmail.com\",\n    \"subject\": \"Test Mail\",\n    \"body\": \"Test Body\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BASE_URL}}mail/text-mail",
+          "host": [
+            "{{BASE_URL}}mail"
+          ],
+          "path": [
+            "text-mail"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "HTML Mail",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"to\": \"testEmail@gmail.com\",\n    \"subject\": \"Test Mail\",\n    \"body\": \"Test Body\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BASE_URL}}mail/html-mail",
+          "host": [
+            "{{BASE_URL}}mail"
+          ],
+          "path": [
+            "html-mail"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:8080/",
+      "type": "string"
+    }
+  ]
+}
