@@ -7,11 +7,7 @@ https://medium.com/@suprempoudel/leveraging-the-power-of-spring-boot-to-send-ema
 
 
 Your app password for your device
-app 
-```
-my_secod_mail_sender
-```
 
 ```
-icmc ssba oypa qbxs
+**icmc ssba oypa qbxs**
 ```
